@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 0.11.1 - 2015-03-09T14:30:26.109Z
+ * Version: 0.11.1 - 2015-03-10T13:15:50.075Z
  * License: MIT
  */
 
@@ -1122,7 +1122,7 @@ uis.directive('uiSelect',
             };
             if (!inputValue) return resultMultiple; //If ngModel was undefined
             for (var k = inputValue.length - 1; k >= 0; k--) {
-              if (!checkFnMultiple($select.selected, inputValue[k])){
+              if (!$select.selected || !$select.selected.length || !checkFnMultiple($select.selected, inputValue[k])){
                 checkFnMultiple(data, inputValue[k]);
               }
             }
