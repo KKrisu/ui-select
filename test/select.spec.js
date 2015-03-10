@@ -191,7 +191,7 @@ describe('ui-select tests', function() {
 
     expect(getMatchLabel(el)).toEqual('Adam');
   });
-  
+
   it('should correctly render initial state with track by feature', function() {
     var el = compileTemplate(
       '<ui-select ng-model="selection.selected"> \
@@ -1667,6 +1667,29 @@ describe('ui-select tests', function() {
       );
 
       expect(el.scope().$select.multiple).toBe(true);
+    });
+
+    it('should properly format values set on model for complex models', function() {
+
+      var el = compileTemplate(
+          '<ui-select multiple ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;"> \
+              <ui-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</ui-select-match> \
+              <ui-select-choices repeat="person.name as person in people | filter: $select.search"> \
+                <div ng-bind-html="person.name | highlight: $select.search"></div> \
+                <div ng-bind-html="person.email | highlight: $select.search"></div> \
+              </ui-select-choices> \
+          </ui-select>'
+      );
+
+      var searchInput = el.find('.ui-select-search');
+
+      scope.selection.selectedMultiple = ['Estefanía', 'Adrian'];
+
+      // there was issue after second digest cyle, so we are triggering it twice
+      el.scope().$digest();
+      el.scope().$digest();
+
+      expect(el.scope().$select.selected).toEqual([scope.people[2], scope.people[3]]);
     });
 
     it('should allow paste tag from clipboard', function() {
